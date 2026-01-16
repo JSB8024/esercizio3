@@ -52,10 +52,12 @@ switch ($command) {
         echo "  php bin/console.php books:list\n";
         echo "  php bin/console.php book:lend B1 M1\n";
         echo "  php bin/console.php book:return B1\n";  
-        echo "\nConfigurazione:\n";
-        echo "DATA_DIR";
-        echo "DATE_FORMAT";
-        echo "MAX_LOANS_PER_MEMBER";
+        echo "\nConfigurazione .env:\n";
+        echo "DATA_DIR\n";
+        echo "DATE_FORMAT\n";
+        echo "MAX_LOANS_PER_MEMBER\n";
+        echo "book:status\n";
+        echo "<BOOK_ID>\n";
         exit(0);
 
         
@@ -109,4 +111,15 @@ switch ($command) {
         echo "Comando sconosciuto: $command\n";
         echo "Suggerimento: php bin/console.php help\n";
         exit(1);
+
+
+    case 'book:status':
+        $bookId = $args[1] ?? '';
+        if ($bookId === '') {
+            echo "Uso: php bin/console.php book:status <BOOK_ID>\n";
+            exit(1);
+        }
+
+        echo $service->bookStatus($bookId) . "\n";
+        exit(0);
 }
