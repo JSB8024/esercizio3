@@ -42,23 +42,35 @@ $todayYmd = date('Y-m-d'); // nel CSV salviamo sempre in formato stabile
 switch ($command) {
     case 'help':
         echo "Biblioteca CLI - comandi disponibili:\n";
-        echo "  help                      Mostra questa guida\n";
-        echo "  members:list              Elenca menìmbri";
-        echo "  books:list                Elenca libri\n";
-        echo "  loans:list                Elenca prestiti aperti\n";
-        echo "  book:lend <BOOK> <MEM>    Presta un libro a un membro\n";
-        echo "  book:return <BOOK>        Registra la restituzione di un libro\n";
+        echo "  help                      Mostra questa guida, che servirà a capire come utilizzare quest'app\n";
+        echo "  members:list              Stampa id e nome di tutti i membri\n";
+        echo "  books:list                Elenca libri disponibili per il prestito\n";
+        echo "  loans:list                Elenca prestiti aperti, mostrando l'elenco delle persone che hanno preso in prestito il libro\n";
+        echo "  book:lend <BOOK> <MEM>    Presta un libro a un membro, specificando la data in cui è stati prestato\n";
+        echo "  book:return <BOOK>        Registra la restituzione di un libro, specificando la data in cui è stato restituito\n";
         echo "\nEsempi:\n";
         echo "  php bin/console.php books:list\n";
         echo "  php bin/console.php book:lend B1 M1\n";
-        echo "  php bin/console.php book:return B1\n";
+        echo "  php bin/console.php book:return B1\n";  
+        echo "\nConfigurazione:\n";
+        echo "DATA_DIR";
+        echo "DATE_FORMAT";
+        echo "MAX_LOANS_PER_MEMBER";
         exit(0);
 
         
     case 'members:list':
-        foreach ($service->listMembers() as $line) {
-            echo $line . "\n";
+        $members = $membersRepo->findAll();
+        if($members) {
+
+            foreach ($members as $member) {
+            echo $member->id()."|". $member->fullName(). "\n";
         }
+        }
+        else {
+            echo "Nessun membro";
+        }
+        
         exit(0);
 
     case 'books:list':
