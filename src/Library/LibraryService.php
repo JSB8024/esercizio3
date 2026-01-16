@@ -67,12 +67,13 @@ final class LibraryService
 
         $member = $this->members->findById($memberId);
         if ($member === null) {
-            return "Errore: membro non trovato (id=$memberId).";
+            return "Errore: membro non trovato (id=$memberId).\n Usa members:list per verificare gli ID.";
         }
 
         if (!$book->isAvailable()) {
             return "Errore: il libro $bookId non è disponibile.";
         }
+
 
         $openLoans = $this->loans->countOpenLoansByMember($memberId);
         if ($openLoans >= $this->maxLoansPerMember) {
@@ -99,7 +100,7 @@ final class LibraryService
         if ($book === null) {
             return "Errore: libro non trovato (id=$bookId).";
         }
-
+        
         $openLoan = $this->loans->findOpenLoanByBookId($bookId);
         if ($openLoan === null) {
             return "Errore: nessun prestito aperto trovato per il libro $bookId.";
